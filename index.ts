@@ -21,7 +21,7 @@ module flipdot
 
 	export interface ISpaceStatusCallback
 	{
-		(err: any, data: ISpaceStatus) => void;
+		(err: any, data: ISpaceStatus): void;
 	}
 
 	/**
