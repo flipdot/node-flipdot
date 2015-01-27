@@ -19,7 +19,12 @@ module flipdot
 		nick: string;
 	}
 
-	export function requestDoorStatus(cb: (err: any, data: ISpaceStatus) => void)
+	export interface ISpaceStatusCallback
+	{
+		(err: any, data: ISpaceStatus) => void;
+	}
+
+	export function requestDoorStatus(cb: ISpaceStatusCallback)
 	{
 		cb = cb || ((err, data) => {});
 
