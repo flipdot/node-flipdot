@@ -1,0 +1,5 @@
+node_modules/
+
+# only index.ts
+# It gets compiled to js using "npm install"
+index.js

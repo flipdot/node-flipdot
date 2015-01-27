@@ -1,0 +1,38 @@
+{
+  "name": "flipdot",
+  "description": "A web based client API for the FlipDot hackerspace Kassel.",
+  "tags": [
+    "hackerspace",
+    "door",
+    "power"
+  ],
+  "version": "0.1.0",
+  "author": {
+    "name": "Niklas Mollenhauer",
+    "email": "nikeee@outlook.com",
+    "url": "https://github.com/nikeee"
+  },
+  "license": "Beerware/Pizzaware",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flipdot/node-flipdot.git"
+  },
+  "bugs": {
+    "url": "http://github.com/flipdot/node-flipdot/issues"
+  },
+  "dependencies": {
+    "request": "~2.51.0",
+    "typescript": "~1.0.1"
+  },
+  "devDependencies": {
+  },
+  "private": true,
+  "readmeFilename": "README.md",
+  "scripts": {
+    "prepublish": "node_modules/.bin/tsc --removeComments --target ES5 --module CommonJS ./index.ts"
+  },
+  "config": { }
+}
