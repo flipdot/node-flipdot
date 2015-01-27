@@ -21,7 +21,7 @@ module flipdot
 
 	export interface ISpaceStatusCallback
 	{
-		(err: any, data: ISpaceStatus): void;
+		(err: any, status: ISpaceStatus): void;
 	}
 
 	/**
@@ -30,11 +30,17 @@ module flipdot
 	 */
 	export function requestDoorStatus(callback: ISpaceStatusCallback): void
 	{
-		callback = callback || ((err, data) => {});
+		callback = callback || ((err, status) => {});
+
+		var hadError = false;
 
 		request(spaceStatusURL, (err, res, body) => {
 			if(!err && res.statusCode == 200)
 			{
+
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice
+
 				var currentStatus = null;
 				try
 				{
@@ -50,6 +56,7 @@ module flipdot
 			}
 			else if(!!err)
 			{
+				hadError = true;
 				callback(err, null);
 			}
 		});
