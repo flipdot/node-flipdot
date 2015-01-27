@@ -24,9 +24,9 @@ module flipdot
 		(err: any, data: ISpaceStatus) => void;
 	}
 
-	export function requestDoorStatus(cb: ISpaceStatusCallback)
+	export function requestDoorStatus(callback: ISpaceStatusCallback)
 	{
-		cb = cb || ((err, data) => {});
+		callback = callback || ((err, data) => {});
 
 		request(spaceStatusURL, (err, res, body) => {
 			if(!err && res.statusCode == 200)
@@ -38,11 +38,11 @@ module flipdot
 				}
 				catch(ex)
 				{
-					cb(ex, null);
+					callback(ex, null);
 					return;
 				}
 				currentStatus = fixStatus(currentStatus);
-				cb(null, currentStatus);
+				callback(null, currentStatus);
 			}
 		});
 	}
