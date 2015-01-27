@@ -14,21 +14,27 @@ module flipdot
 		unknown_users: number;
 	}
 
+	export interface IPowerConsumption
+	{
+		// TODO
+	}
+
 	export interface IUser
 	{
 		nick: string;
 	}
 
-	export interface ISpaceStatusCallback
+	export interface ICallback<T>
 	{
-		(err: any, status: ISpaceStatus): void;
+		(err: any, status: T): void;
 	}
+
 
 	/**
 	 * Retrieves the current status of the hackerspace
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation
 	 */
-	export function requestDoorStatus(callback: ISpaceStatusCallback): void
+	export function requestDoorStatus(callback: ICallback<ISpaceStatus>): void
 	{
 		callback = callback || ((err, status) => {});
 
@@ -60,6 +66,11 @@ module flipdot
 				callback(err, null);
 			}
 		});
+	}
+
+	function requestPowerConsumption(callback: ICallback<IPowerConsumption>): void
+	{
+		// TODO
 	}
 
 	/**
