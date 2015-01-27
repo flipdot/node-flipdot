@@ -3,7 +3,7 @@
 
 import request = require("request");
 
-var jsonUrl = "http://flipdot.org/spacestatus/status.json";
+var spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
 
 module flipdot
 {
@@ -23,7 +23,7 @@ module flipdot
 	{
 		cb = cb || ((err, data) => {});
 
-		request(jsonUrl, (err, res, body) => {
+		request(spaceStatusURL, (err, res, body) => {
 			if(!err && res.statusCode == 200)
 			{
 				var currentStatus = null;
