@@ -21,8 +21,7 @@ module flipdot
 
 	export function requestDoorStatus(cb: (err: any, data: ISpaceStatus) => void)
 	{
-		if(!cb)
-			cb = (err, data) => {};
+		cb = cb || ((err, data) => {});
 
 		request(jsonUrl, (err, res, body) => {
 			if(!err && res.statusCode == 200)
