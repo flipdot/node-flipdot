@@ -1,6 +1,6 @@
 {
   "name": "flipdot",
-  "description": "A web based client API for the FlipDot hackerspace Kassel.",
+  "description": "A web based client API for the flipdot hackerspace Kassel.",
   "tags": [
     "hackerspace",
     "door",
