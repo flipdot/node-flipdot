@@ -3,10 +3,10 @@
 
 import request = require("request");
 
-var spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
-
 module flipdot
 {
+	var spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
+
 	export interface ISpaceStatus
 	{
 		open: boolean;
