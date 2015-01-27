@@ -48,6 +48,10 @@ module flipdot
 				currentStatus = fixStatus(currentStatus);
 				callback(null, currentStatus);
 			}
+			else if(!!err)
+			{
+				callback(err, null);
+			}
 		});
 	}
 
