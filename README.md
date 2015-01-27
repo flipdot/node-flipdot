@@ -3,6 +3,8 @@
 A web based client API for the flipdot hackerspace Kassel.
 
 ## Features
+
+### Current Hackers
 Get current visitors:
 ```JavaScript
 var flipdot = require("flipdot");
@@ -11,6 +13,7 @@ flipdot.requestDoorStatus(function(err, status) {
 });
 ```
 
+### Power Consumption
 Get current power consumption in Watts:
 ```JavaScript
 var flipdot = require("flipdot");
