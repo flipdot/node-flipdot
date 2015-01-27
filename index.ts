@@ -24,6 +24,10 @@ module flipdot
 		(err: any, data: ISpaceStatus) => void;
 	}
 
+	/**
+	 * Retrieves the current status of the hackerspace
+	 * @param {ISpaceStatusCallback} callback The callback of the async operation
+	 */
 	export function requestDoorStatus(callback: ISpaceStatusCallback)
 	{
 		callback = callback || ((err, data) => {});
@@ -47,6 +51,11 @@ module flipdot
 		});
 	}
 
+	/**
+	 * Internal method to normalize the return value of the API
+	 * @param  {ISpaceStatus} status The original return value
+	 * @return {ISpaceStatus}        The normalized result
+	 */
 	function fixStatus(status: ISpaceStatus): ISpaceStatus
 	{
 		return {
