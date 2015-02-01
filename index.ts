@@ -40,7 +40,7 @@ module flipdot
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
-	export function requestDoorStatus(callback: ICallback<ISpaceStatus>): void
+	export function requestSpaceStatus(callback: ICallback<ISpaceStatus>): void
 	{
 		callback = callback || ((err, status) => {});
 		var hadError = false;
