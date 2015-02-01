@@ -8,7 +8,7 @@ A web based client API for the flipdot hackerspace Kassel.
 Get current visitors:
 ```JavaScript
 var flipdot = require("flipdot");
-flipdot.requestDoorStatus(function(err, status) {
+flipdot.requestSpaceStatus(function(err, status) {
 	console.dir(!!err ? err : status);
 });
 ```
