@@ -24,10 +24,10 @@
     "url": "http://github.com/flipdot/node-flipdot/issues"
   },
   "dependencies": {
-    "request": "~2.51.0",
-    "typescript": "~1.4.1"
+    "request": "~2.51.0"
   },
   "devDependencies": {
+    "typescript": "~1.4.1"
   },
   "private": true,
   "readmeFilename": "README.md",
