@@ -27,4 +27,23 @@ Outputs (for example):
 	timestamp: Tue Jan 27 2015 22:00:00 GMT+0100 (W. Europe Standard Time),
 	consumption: 9001
 }
+
+### Q Sample
+```JavaScript
+var flipdot = require("flipdot");
+var Q = require("q");
+
+var requestPowerConsumption = Q.denodeify(flipdot.requestPowerConsumption);
+var requestSpaceStatus = Q.denodeify(flipdot.requestSpaceStatus);
+
+Q.all([
+	requestPowerConsumption(),
+	requestSpaceStatus()
+]).done(function(results) {
+	console.log("power consumption:")
+	console.dir(results[0]);
+	console.log("space status:")
+	console.dir(results[1]);
+});
+```
 ```
