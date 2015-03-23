@@ -1,4 +1,4 @@
-# node-flipdot
+# node-flipdot [![Build Status](https://travis-ci.org/flipdot/node-flipdot.svg?branch=master)](https://travis-ci.org/flipdot/node-flipdot)
 
 A web based client API for the flipdot hackerspace Kassel.
 
