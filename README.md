@@ -27,6 +27,7 @@ Outputs (for example):
 	timestamp: Tue Jan 27 2015 22:00:00 GMT+0100 (W. Europe Standard Time),
 	consumption: 9001
 }
+```
 
 ### Q Sample
 ```JavaScript
@@ -45,5 +46,4 @@ Q.all([
 	console.log("space status:")
 	console.dir(results[1]);
 });
-```
 ```
