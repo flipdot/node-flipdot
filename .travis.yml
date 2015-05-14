@@ -5,4 +5,4 @@ install:
   - "npm install -g typescript"
   - "npm install -g tsd"
 script:
-  - "tsc --module commonjs --target ES5 ./index.ts"
+  - "npm test"
