@@ -1,12 +1,12 @@
 /// <reference path="typings/node/node.d.ts" />
 /// <reference path="typings/request/request.d.ts" />
 
-import request = require("request");
+import * as request from "request";
 
 module flipdot
 {
-	var spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
-	var powerConsumptionURL = "http://infragelb.de/flipdot-power/";
+	const spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
+	const powerConsumptionURL = "http://infragelb.de/flipdot-power/";
 
 	export interface ISpaceStatus
 	{
@@ -43,7 +43,7 @@ module flipdot
 	export function requestSpaceStatus(callback: ICallback<ISpaceStatus>): void
 	{
 		callback = callback || ((err, status) => {});
-		var hadError = false;
+		let hadError = false;
 
 		request(spaceStatusURL, (err, res, body) => {
 			if(!err && res.statusCode == 200)
@@ -51,7 +51,7 @@ module flipdot
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
 
-				var currentStatus = null;
+				let currentStatus = null;
 				try
 				{
 					currentStatus = JSON.parse(body);
@@ -75,7 +75,7 @@ module flipdot
 	export function requestPowerConsumption(callback: ICallback<IPowerConsumption>): void
 	{
 		callback = callback || ((err, status) => {});
-		var hadError = false;
+		let hadError = false;
 
 		request(powerConsumptionURL, (err, res, body) => {
 			if(!err && res.statusCode == 200)
@@ -83,7 +83,7 @@ module flipdot
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
 
-				var currentConsumption = null;
+				let currentConsumption = null;
 				try
 				{
 					currentConsumption = parsePowerConsumption(body);
@@ -128,17 +128,17 @@ module flipdot
 
 		// 27.01.2015,21:47:48,00438
 
-		var dateStr = splitted[0].trim();
-		var timeStr = splitted[1].trim();
-		var consumptionStr = splitted[2].trim();
+		let dateStr = splitted[0].trim();
+		let timeStr = splitted[1].trim();
+		let consumptionStr = splitted[2].trim();
 
-		var dateSplit = dateStr.split(".");
-		var timeSplit = timeStr.split(":");
+		let dateSplit = dateStr.split(".");
+		let timeSplit = timeStr.split(":");
 
 		if(dateSplit.length !== 3 || timeSplit.length !== 3)
 			throw new Error("Invalid API response (malformed date/time).");
 
-		var timestamp = new Date(
+		let timestamp = new Date(
 									parseInt(dateSplit[2]), /* may catch parse error here to throw specific exception */
 									parseInt(dateSplit[1]) - 1, /* constructor takes 0-based months */
 									parseInt(dateSplit[0]),
