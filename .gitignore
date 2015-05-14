@@ -5,3 +5,4 @@ npm-debug.log
 # only index.ts
 # It gets compiled to js using "npm install"
 index.js
+test.js

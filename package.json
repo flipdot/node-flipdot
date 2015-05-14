@@ -32,7 +32,8 @@
   "private": true,
   "readmeFilename": "README.md",
   "scripts": {
-    "prepublish": "node_modules/.bin/tsc --removeComments --target ES5 --module CommonJS ./index.ts"
+    "prepublish": "node_modules/.bin/tsc",
+    "test": "node_modules/.bin/tsc"
   },
   "config": { }
 }
