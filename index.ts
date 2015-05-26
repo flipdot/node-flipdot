@@ -8,6 +8,12 @@ module flipdot
 	const spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
 	const powerConsumptionURL = "http://infragelb.de/flipdot-power/";
 
+	const hutschienenHost = "hutschienenpi.fd";
+	const hutschienenPort = 8080;
+
+	const canBusBase = `http://${hutschienenHost}:${hutschienenPort}`;
+	const orangeLightUrl = `${canBusBase}/Hutschiene/OrangeLight`;
+
 	export interface ISpaceStatus
 	{
 		open: boolean;
@@ -35,6 +41,34 @@ module flipdot
 		(err: any, status: T): void;
 	}
 
+	export const enum LightStatus
+	{
+		Off = 0,
+		On = 1
+	}
+
+	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
+	{
+		callback = callback || ((err, status) => {});
+		let hadError = false;
+
+		let statusString = status == LightStatus.On ? "true": "false";
+		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
+
+		request.post(statusUrl, (err, res, body) => {
+			if(!err && res.statusCode == 200)
+			{
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice.
+				callback(null, null);
+			}
+			else if(!!err)
+			{
+				hadError = true;
+				callback(err, null);
+			}
+		});
+	}
 
 	/**
 	 * Retrieves the current status of the hackerspace.
