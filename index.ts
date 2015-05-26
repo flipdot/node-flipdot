@@ -49,8 +49,12 @@ module flipdot
 
 	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
 	{
+		callback = callback || ((err, status) => {});
+		let hadError = false;
+
 		let statusString = status == LightStatus.On ? "true": "false";
 		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
+
 		request.post(statusUrl, (err, res, body) => {
 			if(!err && res.statusCode == 200)
 			{
