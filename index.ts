@@ -133,6 +133,42 @@ module flipdot
 	}
 
 	/**
+	 * Sets the target temperature of the radiator.
+	 * @param {number} temperature The target temperature in celsius.
+	 */	
+	export function setTargetTemperature(temperature: number, callback: ICallback<void>): void
+	{
+		callback = callback || ((err, status) => {});
+		let hadError = false;
+
+		/*
+		 "Param xx: ((soll)*2) in hex. Alle Hexwerte in Kleinbuchstaben.
+		  z.B. Soll = 20C. 20*2 = 40; 40=28h" (wtf)
+		*/
+		let targetTemp = (temperature * 2).toString(16);
+		// TODO: TEST THIS
+		// TODO: Append hex-Postfix? (h)
+		// TODO: Padleft with 0?
+		// TODO: HTTP parameter name?
+		let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
+		let serviceUrl = `${opUrl}?temp=${targetTemp}`;
+
+		request.post(serviceUrl, (err, res, body) => {
+			if(!err && res.statusCode == 200)
+			{
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice.
+				callback(null, null);
+			}
+			else if(!!err)
+			{
+				hadError = true;
+				callback(err, null);
+			}
+		});
+	}
+	
+	/**
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
