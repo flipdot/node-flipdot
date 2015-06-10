@@ -8,7 +8,7 @@ A web based client API for the flipdot hackerspace Kassel.
 Get current visitors:
 ```JavaScript
 var flipdot = require("flipdot");
-flipdot.requestSpaceStatus(function(err, status) {
+flipdot.getSpaceStatus(function(err, status) {
 	console.dir(!!err ? err : status);
 });
 ```
@@ -17,7 +17,7 @@ flipdot.requestSpaceStatus(function(err, status) {
 Get current power consumption in Watts:
 ```JavaScript
 var flipdot = require("flipdot");
-flipdot.requestPowerConsumption(function(err, data) {
+flipdot.getPowerConsumption(function(err, data) {
 	console.dir(!!err ? err : data);
 });
 ```
@@ -62,12 +62,12 @@ flipdot.setTargetTemperature(20, function(err) {
 var flipdot = require("flipdot");
 var Q = require("q");
 
-var requestPowerConsumption = Q.denodeify(flipdot.requestPowerConsumption);
-var requestSpaceStatus = Q.denodeify(flipdot.requestSpaceStatus);
+var getPowerConsumption = Q.denodeify(flipdot.getPowerConsumption);
+var getSpaceStatus = Q.denodeify(flipdot.getSpaceStatus);
 
 Q.all([
-	requestPowerConsumption(),
-	requestSpaceStatus()
+	getPowerConsumption(),
+	getSpaceStatus()
 ]).done(function(results) {
 	console.log("power consumption:")
 	console.dir(results[0]);

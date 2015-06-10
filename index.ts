@@ -128,21 +128,6 @@ module flipdot
 			}
 		});
 	}
-	
-	/**
-	 * Parses a temperature response of the radiator client.
-	 */
-	function parseTemperature(responseBody: string): ITemperature
-	{
-		if (!responseBody || responseBody.trim() === "")
-			throw "Got empty response from CAN client";
-		let temp = responseBody.trim().toLowerCase();
-		return {
-			/* "Angabe in 1/100C" */
-			value: parseInt(temp) / 100,
-			unit: "°C"
-		};
-	}
 
 	/**
 	 * Sets the target temperature of the radiator.
@@ -181,10 +166,17 @@ module flipdot
 	}
 	
 	/**
+	 * @deprecated Use getSpaceStatus instead
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
-	export function requestSpaceStatus(callback: ICallback<ISpaceStatus>): void
+	export let requestSpaceStatus = getSpaceStatus;
+	
+	/**
+	 * Retrieves the current status of the hackerspace.
+	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
+	 */
+	export function getSpaceStatus(callback: ICallback<ISpaceStatus>): void
 	{
 		callback = callback || ((err, status) => {});
 		let hadError = false;
@@ -215,8 +207,17 @@ module flipdot
 			}
 		});
 	}
+	
+	/**
+	 * @deprecated Use getPowerConsumption instead.
+	 * Get current power consumption in Watts.
+	 */
+	export let requestPowerConsumption = getPowerConsumption;
 
-	export function requestPowerConsumption(callback: ICallback<IPowerConsumption>): void
+	/**
+	 * Get current power consumption in Watts.
+	 */
+	export function getPowerConsumption(callback: ICallback<IPowerConsumption>): void
 	{
 		callback = callback || ((err, status) => {});
 		let hadError = false;
@@ -295,6 +296,21 @@ module flipdot
 		return {
 			timestamp: timestamp,
 			consumption: parseInt(consumptionStr) /* may catch parse error here to throw specific exception */
+		};
+	}
+
+	/**
+	 * Parses a temperature response of the radiator client.
+	 */
+	function parseTemperature(responseBody: string): ITemperature
+	{
+		if (!responseBody || responseBody.trim() === "")
+			throw "Got empty response from CAN client";
+		let temp = responseBody.trim().toLowerCase();
+		return {
+			/* "Angabe in 1/100C" */
+			value: parseInt(temp) / 100,
+			unit: "°C"
 		};
 	}
 
