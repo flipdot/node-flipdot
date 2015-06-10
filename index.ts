@@ -89,17 +89,7 @@ module flipdot
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
-
-				if (!body || body.trim() === "")
-					throw "Got empty response from CAN client";
-
-				let temp = body.trim().toLowerCase();
-
-				callback(null, {
-					/* "Aktuelle Temperatur auslesen. Angabe in 1/100C */
-					value: parseInt(temp) / 100,
-					unit: "°C"
-				});
+				callback(null, parseTemperature(body));
 			}
 			else if(!!err)
 			{
@@ -107,6 +97,39 @@ module flipdot
 				callback(err, null);
 			}
 		});
+	}
+
+	export function getTargetTemperature(callback: ICallback<ITemperature>): void
+	{
+		callback = callback || ((err, status) => {});
+		let hadError = false;
+		let serviceUrl = getCANUrl(radiatorClientName, "getTargetTemp");
+
+		request.get(serviceUrl, (err, res, body) => {
+			if(!err && res.statusCode == 200)
+			{
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice.
+				callback(null, parseTemperature(body));
+			}
+			else if(!!err)
+			{
+				hadError = true;
+				callback(err, null);
+			}
+		});
+	}
+	
+	function parseTemperature(responseBody: string): ITemperature
+	{
+		if (!responseBody || responseBody.trim() === "")
+			throw "Got empty response from CAN client";
+		let temp = responseBody.trim().toLowerCase();
+		return {
+			/* "Angabe in 1/100C" */
+			value: parseInt(temp) / 100,
+			unit: "°C"
+		};
 	}
 
 	/**
