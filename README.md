@@ -50,6 +50,11 @@ flipdot.getTargetTemperature(function(err, temp) {
 	if(err) return console.error(err);
     console.log("The radiator is set to %d %s", temp.value, temp.unit);
 });
+
+flipdot.setTargetTemperature(20, function(err, temp) {
+	if(err) return console.error(err);
+    console.log("The radiator is now set to %d °C", 20);
+});
 ```
 
 ### Q Sample
