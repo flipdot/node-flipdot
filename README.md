@@ -32,11 +32,19 @@ Outputs (for example):
 ### Orange Light
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-flipdot.setOrangeLightStatus(flipdot.LightStatus.On, err => {
+flipdot.setOrangeLightStatus(flipdot.LightStatus.On, function(err) {
     if(err) return console.error(err);
     console.log("The orange light should now be on.");
 });
+```
 
+### Radiator Control
+**Note:** This functionality is only available when the client is in the network of flipdot Kassel.
+```JavaScript
+flipdot.getCurrentTemperature(function(err, temp) {
+	if(err) return console.error(err);
+    console.log("It is currently %d %s", temp.value, temp.unit);
+});
 ```
 
 ### Q Sample
