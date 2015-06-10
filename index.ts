@@ -37,6 +37,12 @@ module flipdot
 		nick: string;
 	}
 
+	export interface ITemperature
+	{
+		value: number;
+		unit: string;
+	}
+
 	export interface ICallback<T>
 	{
 		(err: any, status: T): void;
@@ -54,7 +60,7 @@ module flipdot
 		let hadError = false;
 
 		let statusString = status == LightStatus.on ? "true" : "false";
-		let orangeLightUrl = `${getCANUrl(hutshieneClientName)}OrangeLight/`;
+		let orangeLightUrl = getCANUrl(hutshieneClientName, "OrangeLight");
 		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
 
 		request.post(statusUrl, (err, res, body) => {
@@ -63,6 +69,37 @@ module flipdot
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
 				callback(null, null);
+			}
+			else if(!!err)
+			{
+				hadError = true;
+				callback(err, null);
+			}
+		});
+	}
+
+	export function getCurrentTemperature(callback: ICallback<ITemperature>): void
+	{
+		callback = callback || ((err, status) => {});
+		let hadError = false;
+		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
+
+		request.get(serviceUrl, (err, res, body) => {
+			if(!err && res.statusCode == 200)
+			{
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice.
+
+				if (!body || body.trim() === "")
+					throw "Got empty response from CAN client";
+
+				let temp = body.trim().toLowerCase();
+
+				callback(null, {
+					/* "Aktuelle Temperatur auslesen. Angabe in 1/100C */
+					value: parseInt(temp) / 100,
+					unit: "°C"
+				});
 			}
 			else if(!!err)
 			{
@@ -190,9 +227,11 @@ module flipdot
 		};
 	}
 
-	function getCANUrl(clientName: string): string
+	function getCANUrl(clientName: string, operation: string = ""): string
 	{
-		return `${canBusBase}/${clientName}/`;
+		if (operation !== "")
+			operation += "/";
+		return `${canBusBase}/${clientName}/${operation}`;
 	}
 }
 
