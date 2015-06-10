@@ -32,7 +32,7 @@ Outputs (for example):
 ### Orange Light
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-flipdot.setOrangeLightStatus(flipdot.LightStatus.On, function(err) {
+flipdot.setOrangeLightStatus(flipdot.LightStatus.on, function(err) {
     if(err) return console.error(err);
     console.log("The orange light should now be on.");
 });
