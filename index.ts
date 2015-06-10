@@ -67,7 +67,7 @@ module flipdot
 		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
 
 		request.post(statusUrl, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -91,7 +91,7 @@ module flipdot
 		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
 
 		request.get(serviceUrl, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -115,7 +115,7 @@ module flipdot
 		let serviceUrl = getCANUrl(radiatorClientName, "getTargetTemp");
 
 		request.get(serviceUrl, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -166,7 +166,7 @@ module flipdot
 		let serviceUrl = `${opUrl}?temp=${targetTemp}`;
 
 		request.post(serviceUrl, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -190,7 +190,7 @@ module flipdot
 		let hadError = false;
 
 		request(spaceStatusURL, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -222,7 +222,7 @@ module flipdot
 		let hadError = false;
 
 		request(powerConsumptionURL, (err, res, body) => {
-			if(!err && res.statusCode == 200)
+			if(!err && isSuccess(res))
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
@@ -303,6 +303,13 @@ module flipdot
 		if (operation !== "")
 			operation += "/";
 		return `${canBusBase}/${clientName}/${operation}`;
+	}
+	
+	function isSuccess(res): boolean
+	{
+		if (!res || !res.statusCode)
+			return false;
+		return res.statusCode >= 200 && res.statusCode < 300;
 	}
 }
 
