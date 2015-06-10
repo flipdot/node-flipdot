@@ -17,7 +17,7 @@ requestSpaceStatus((err, res) => {
     console.log(`Visitor count: ${res.unknown_users + res.known_users.length}`);
 });
 
-setOrangeLightStatus(LightStatus.On, err => {
+setOrangeLightStatus(LightStatus.on, err => {
     if(err) return console.error(err);
     console.log("Done");
 });

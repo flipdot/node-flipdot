@@ -43,8 +43,8 @@ module flipdot
 
 	export const enum LightStatus
 	{
-		Off = 0,
-		On = 1
+		off = 0,
+		on = 1
 	}
 
 	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
@@ -52,7 +52,7 @@ module flipdot
 		callback = callback || ((err, status) => {});
 		let hadError = false;
 
-		let statusString = status == LightStatus.On ? "true": "false";
+		let statusString = status == LightStatus.on ? "true": "false";
 		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
 
 		request.post(statusUrl, (err, res, body) => {
