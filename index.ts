@@ -12,7 +12,8 @@ module flipdot
 	const hutschienenPort = 8080;
 
 	const canBusBase = `http://${hutschienenHost}:${hutschienenPort}`;
-	const orangeLightUrl = `${canBusBase}/Hutschiene/OrangeLight`;
+	const hutshieneClientName = "Hutschiene";
+	const radiatorClientName = "theemin";
 
 	export interface ISpaceStatus
 	{
@@ -52,7 +53,8 @@ module flipdot
 		callback = callback || ((err, status) => {});
 		let hadError = false;
 
-		let statusString = status == LightStatus.on ? "true": "false";
+		let statusString = status == LightStatus.on ? "true" : "false";
+		let orangeLightUrl = `${getCANUrl(hutshieneClientName)}OrangeLight/`;
 		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
 
 		request.post(statusUrl, (err, res, body) => {
@@ -186,6 +188,11 @@ module flipdot
 			timestamp: timestamp,
 			consumption: parseInt(consumptionStr) /* may catch parse error here to throw specific exception */
 		};
+	}
+
+	function getCANUrl(clientName: string): string
+	{
+		return `${canBusBase}/${clientName}/`;
 	}
 }
 
