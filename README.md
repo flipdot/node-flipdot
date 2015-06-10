@@ -45,6 +45,11 @@ flipdot.getCurrentTemperature(function(err, temp) {
 	if(err) return console.error(err);
     console.log("It is currently %d %s", temp.value, temp.unit);
 });
+
+flipdot.getTargetTemperature(function(err, temp) {
+	if(err) return console.error(err);
+    console.log("The radiator is set to %d %s", temp.value, temp.unit);
+});
 ```
 
 ### Q Sample
