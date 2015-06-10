@@ -54,6 +54,9 @@ module flipdot
 		on = 1
 	}
 
+	/**
+	 * Switches the orange light on or off.
+	 */
 	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
 	{
 		callback = callback || ((err, status) => {});
@@ -78,6 +81,9 @@ module flipdot
 		});
 	}
 
+	/**
+	 * Gets the current temperature as measured by the sensor of the radiator control.
+	 */
 	export function getCurrentTemperature(callback: ICallback<ITemperature>): void
 	{
 		callback = callback || ((err, status) => {});
@@ -99,6 +105,9 @@ module flipdot
 		});
 	}
 
+	/**
+	 * Gets the temperature that the radiator is set to.
+	 */
 	export function getTargetTemperature(callback: ICallback<ITemperature>): void
 	{
 		callback = callback || ((err, status) => {});
@@ -120,6 +129,9 @@ module flipdot
 		});
 	}
 	
+	/**
+	 * Parses a temperature response of the radiator client.
+	 */
 	function parseTemperature(responseBody: string): ITemperature
 	{
 		if (!responseBody || responseBody.trim() === "")
