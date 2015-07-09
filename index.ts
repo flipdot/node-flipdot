@@ -48,7 +48,7 @@ module flipdot
 		(err: any, status: T): void;
 	}
 
-	export const enum LightStatus
+	export enum LightStatus
 	{
 		off = 0,
 		on = 1
@@ -64,7 +64,7 @@ module flipdot
 
 		let statusString = status == LightStatus.on ? "true" : "false";
 		let orangeLightUrl = getCANUrl(hutshieneClientName, "OrangeLight");
-		let statusUrl = `${orangeLightUrl}?status=${statusString}`;
+		let statusUrl = `${orangeLightUrl}?state=${statusString}`;
 
 		request.post(statusUrl, (err, res, body) => {
 			if(!err && isSuccess(res))
