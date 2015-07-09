@@ -316,7 +316,7 @@ module flipdot
 
 	function getCANUrl(clientName: string, operation: string = ""): string
 	{
-		if (operation === "")
+		if (operation !== "")
 			operation = "/" + operation;
 		return `${canBusBase}/${clientName}${operation}`;
 	}
