@@ -283,15 +283,9 @@ module flipdot
 		if(dateSplit.length !== 3 || timeSplit.length !== 3)
 			throw new Error("Invalid API response (malformed date/time).");
 
-		let timestamp = new Date(
-									parseInt(dateSplit[2]), /* may catch parse error here to throw specific exception */
-									parseInt(dateSplit[1]) - 1, /* constructor takes 0-based months */
-									parseInt(dateSplit[0]),
-									parseInt(timeSplit[0]),
-									parseInt(timeSplit[1]),
-									parseInt(timeSplit[2]),
-									0
-								);
+		// constructor for months takes 0-based months
+		let timestamp = new Date(parseInt(dateSplit[2]), parseInt(dateSplit[1]) - 1, parseInt(dateSplit[0]),
+								parseInt(timeSplit[0]), parseInt(timeSplit[1]), parseInt(timeSplit[2]), 0);
 
 		return {
 			timestamp: timestamp,
