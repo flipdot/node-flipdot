@@ -57,6 +57,15 @@ module flipdot
 	type RequestFunction = (url: string, callback: (err, res, body) => void) => void;
 	type ParseFunction = (body: string) => void;
 	
+	function wrapWithTry<T>(fn: () => T): [Error, T]
+	{
+		try {
+			return [null, fn()];
+		} catch(ex) {
+			return [ex, null];
+		}
+	}
+	
 	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => [any, T], callback: ICallback<T>, url: string): void
 	{
 		let hadError = false;
@@ -119,13 +128,11 @@ module flipdot
 	{
 		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
 
-		return doAndParseRequest(request.get, body => {
-			try {
-				return [null, parseTemperature(body)];
-			} catch(ex) {
-				return [ex, null];
-			}
-		}, callback, serviceUrl)
+		return doAndParseRequest(
+			request.get,
+			body => wrapWithTry(() => parseTemperature(body)),
+			callback,
+			serviceUrl)
 	}
 
 	/**
@@ -135,13 +142,11 @@ module flipdot
 	{
 		let serviceUrl = getCANUrl(radiatorClientName, "getTargetTemp");
 
-		return doAndParseRequest(request.get, body => {
-			try {
-				return [null, parseTemperature(body)];
-			} catch(ex) {
-				return [ex, null];
-			}
-		}, callback, serviceUrl);
+		return doAndParseRequest(
+			request.get,
+			body => wrapWithTry(() =>parseTemperature(body)),
+			callback,
+			serviceUrl);
 	}
 
 	/**
@@ -196,16 +201,14 @@ module flipdot
 		callback = callback || ((err, status) => {});
 		let hadError = false;
 
-		return doAndParseRequest(request.get, body => {
-			try
-			{
+		return doAndParseRequest(
+			request.get,
+			body => wrapWithTry(() => {
 				let status = JSON.parse(body);
-				status = fixStatus(status);
-			}
-			catch(ex) {
-				return [ex, null];
-			}
-		}, callback, spaceStatusURL);
+				return fixStatus(status);
+			}),
+			callback,
+			spaceStatusURL);
 	}
 	
 	/**
@@ -220,8 +223,7 @@ module flipdot
 	export function getPowerConsumption(callback: ICallback<IPowerConsumption>): void
 	{
 		callback = callback || ((err, status) => {});
-		let hadError = false;
-
+		
 		request(powerConsumptionURL, (err, res, body) => {
 			if(!err && isSuccess(res))
 			{
