@@ -57,7 +57,7 @@ module flipdot
 	type RequestFunction = (url: string, callback: (err, res, body) => void) => void;
 	type ParseFunction = (body: string) => void;
 	
-	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => T, callback: ICallback<T>, url: string): void
+	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => [any, T], callback: ICallback<T>, url: string): void
 	{
 		let hadError = false;
 		request(url, (err, res, body) => {
@@ -65,13 +65,22 @@ module flipdot
 			{
 				if(hadError) // If request calls the callback although it already reported an error
 					return; // avoid calling the callback twice.
-				let parsedResponse = parser ? parser(body) : null;
-				callback(null, parsedResponse);
+
+				let [err, res] = parser ? parser(body) : [null, null];
+
+				if(callback)
+				{
+					if(err)
+						callback(err, null);
+					else
+						callback(null, res);
+				}
 			}
 			else if(!!err)
 			{
 				hadError = true;
-				callback(err, null);
+				if(callback)
+					callback(err, null);
 			}
 		});
 	}
@@ -108,24 +117,15 @@ module flipdot
 	 */
 	export function getCurrentTemperature(callback: ICallback<ITemperature>): void
 	{
-		callback = callback || ((err, status) => {});
-		let hadError = false;
 		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
 
-		doAndParseRequest(request.get, statusUrl, )
-		request.get(serviceUrl, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-				callback(null, parseTemperature(body));
+		return doAndParseRequest(request.get, body => {
+			try {
+				return [null, parseTemperature(body)];
+			} catch(ex) {
+				return [ex, null];
 			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
-			}
-		});
+		}, callback, serviceUrl)
 	}
 
 	/**
@@ -133,23 +133,15 @@ module flipdot
 	 */
 	export function getTargetTemperature(callback: ICallback<ITemperature>): void
 	{
-		callback = callback || ((err, status) => {});
-		let hadError = false;
 		let serviceUrl = getCANUrl(radiatorClientName, "getTargetTemp");
 
-		request.get(serviceUrl, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-				callback(null, parseTemperature(body));
+		return doAndParseRequest(request.get, body => {
+			try {
+				return [null, parseTemperature(body)];
+			} catch(ex) {
+				return [ex, null];
 			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
-			}
-		});
+		}, callback, serviceUrl);
 	}
 
 	/**
@@ -204,31 +196,16 @@ module flipdot
 		callback = callback || ((err, status) => {});
 		let hadError = false;
 
-		request(spaceStatusURL, (err, res, body) => {
-			if(!err && isSuccess(res))
+		return doAndParseRequest(request.get, body => {
+			try
 			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-
-				let currentStatus = null;
-				try
-				{
-					currentStatus = JSON.parse(body);
-				}
-				catch(ex)
-				{
-					callback(ex, null);
-					return;
-				}
-				currentStatus = fixStatus(currentStatus);
-				callback(null, currentStatus);
+				let status = JSON.parse(body);
+				status = fixStatus(status);
 			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
+			catch(ex) {
+				return [ex, null];
 			}
-		});
+		}, callback, spaceStatusURL);
 	}
 	
 	/**
@@ -322,7 +299,8 @@ module flipdot
 	function parseTemperature(responseBody: string): ITemperature
 	{
 		if (!responseBody || responseBody.trim() === "")
-			throw "Got empty response from CAN client";
+			throw new Error("Got empty response from CAN client");
+
 		let temp = responseBody.trim().toLowerCase();
 		return {
 			/* "Angabe in 1/100C" */
