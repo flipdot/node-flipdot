@@ -1,6 +1,4 @@
-var dts = require("dts-bundle");
-
-dts.bundle({
+require("dts-bundle").bundle({
 	name: "flipdot",
 	main: "build/flipdot.d.ts",
 	out: "flipdot.d.ts"
