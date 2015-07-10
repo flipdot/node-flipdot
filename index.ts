@@ -56,7 +56,7 @@ module flipdot
 
 	type RequestFunction = (url: string, callback: (err, res, body) => void) => void;
 	type ParseFunction = (body: string) => void;
-	
+
 	function wrapWithTry<T>(fn: () => T): [Error, T]
 	{
 		try {
@@ -65,7 +65,7 @@ module flipdot
 			return [ex, null];
 		}
 	}
-	
+
 	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => [any, T], callback: ICallback<T>, url: string): void
 	{
 		let hadError = false;
@@ -99,26 +99,15 @@ module flipdot
 	 */
 	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
 	{
-		callback = callback || ((err, status) => {});
-		let hadError = false;
-
 		let statusString = status == LightStatus.on ? "true" : "false";
 		let orangeLightUrl = getCANUrl(hutshieneClientName, "OrangeLight");
 		let statusUrl = `${orangeLightUrl}?state=${statusString}`;
 
-		request.post(statusUrl, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-				callback(null, null);
-			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
-			}
-		});
+		return doAndParseRequest(
+			request.post,
+			null,
+			callback,
+			statusUrl);
 	}
 
 	/**
@@ -132,7 +121,7 @@ module flipdot
 			request.get,
 			body => wrapWithTry(() => parseTemperature(body)),
 			callback,
-			serviceUrl)
+			serviceUrl);
 	}
 
 	/**
@@ -152,12 +141,9 @@ module flipdot
 	/**
 	 * Sets the target temperature of the radiator.
 	 * @param {number} temperature The target temperature in celsius.
-	 */	
+	 */
 	export function setTargetTemperature(temperature: number, callback: ICallback<void>): void
 	{
-		callback = callback || ((err, status) => {});
-		let hadError = false;
-
 		/*
 		 "Param xx: ((soll)*2) in hex. Alle Hexwerte in Kleinbuchstaben.
 		  z.B. Soll = 20C. 20*2 = 40; 40=28h" (wtf)
@@ -170,37 +156,26 @@ module flipdot
 		let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
 		let serviceUrl = `${opUrl}?temp=${targetTemp}`;
 
-		request.post(serviceUrl, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-				callback(null, null);
-			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
-			}
-		});
+		return doAndParseRequest(
+			request.post,
+			null,
+			callback,
+			serviceUrl);
 	}
-	
+
 	/**
 	 * @deprecated Use getSpaceStatus instead
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
 	export let requestSpaceStatus = getSpaceStatus;
-	
+
 	/**
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
 	export function getSpaceStatus(callback: ICallback<ISpaceStatus>): void
 	{
-		callback = callback || ((err, status) => {});
-		let hadError = false;
-
 		return doAndParseRequest(
 			request.get,
 			body => wrapWithTry(() => {
@@ -210,7 +185,7 @@ module flipdot
 			callback,
 			spaceStatusURL);
 	}
-	
+
 	/**
 	 * @deprecated Use getPowerConsumption instead.
 	 * Get current power consumption in Watts.
@@ -222,32 +197,11 @@ module flipdot
 	 */
 	export function getPowerConsumption(callback: ICallback<IPowerConsumption>): void
 	{
-		callback = callback || ((err, status) => {});
-		
-		request(powerConsumptionURL, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-
-				let currentConsumption = null;
-				try
-				{
-					currentConsumption = parsePowerConsumption(body);
-				}
-				catch(ex)
-				{
-					callback(ex, null);
-					return;
-				}
-				callback(null, currentConsumption);
-			}
-			else if(!!err)
-			{
-				hadError = true;
-				callback(err, null);
-			}
-		});
+		return doAndParseRequest(
+			request.get,
+			body => wrapWithTry(() => parsePowerConsumption(body)),
+			callback,
+			powerConsumptionURL);
 	}
 
 	/**
@@ -317,7 +271,7 @@ module flipdot
 			operation = "/" + operation;
 		return `${canBusBase}/${clientName}${operation}`;
 	}
-	
+
 	function isSuccess(res): boolean
 	{
 		if (!res || !res.statusCode)
