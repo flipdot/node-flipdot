@@ -1,4 +1,4 @@
-# node-flipdot [![Build Status](https://travis-ci.org/flipdot/node-flipdot.svg?branch=master)](https://travis-ci.org/flipdot/node-flipdot) ![Dependency Status](https://david-dm.org/flipdot/node-flipdot.svg)
+# node-flipdot [![Build Status](https://travis-ci.org/flipdot/node-flipdot.svg?branch=master)](https://travis-ci.org/flipdot/node-flipdot) ![Dependency Status](https://david-dm.org/flipdot/node-flipdot.svg) ![npm version](https://img.shields.io/npm/v/flipdot.svg)
 
 A web based client API for the flipdot hackerspace Kassel.
 
