@@ -115,7 +115,7 @@ module flipdot
 	 */
 	export function getCurrentTemperature(callback: ICallback<ITemperature>): void
 	{
-		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
+		let serviceUrl = getCANUrl(radiatorClientName, "GetActTemp");
 
 		return doAndParseRequest(
 			request.get,
@@ -129,7 +129,7 @@ module flipdot
 	 */
 	export function getTargetTemperature(callback: ICallback<ITemperature>): void
 	{
-		let serviceUrl = getCANUrl(radiatorClientName, "getTargetTemp");
+		let serviceUrl = getCANUrl(radiatorClientName, "GetTargetTemp");
 
 		return doAndParseRequest(
 			request.get,
@@ -148,13 +148,12 @@ module flipdot
 		 "Param xx: ((soll)*2) in hex. Alle Hexwerte in Kleinbuchstaben.
 		  z.B. Soll = 20C. 20*2 = 40; 40=28h" (wtf)
 		*/
-		let targetTemp = (temperature * 2).toString(16);
+
+		// let targetTemp = (temperature * 2).toString(16);
+
 		// TODO: TEST THIS
-		// TODO: Append hex-Postfix? (h)
-		// TODO: Padleft with 0?
-		// TODO: HTTP parameter name?
 		let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
-		let serviceUrl = `${opUrl}?temp=${targetTemp}`;
+		let serviceUrl = `${opUrl}?temp=${temperature}`;
 
 		return doAndParseRequest(
 			request.post,
