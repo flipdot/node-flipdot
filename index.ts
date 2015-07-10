@@ -54,6 +54,28 @@ module flipdot
 		on = 1
 	}
 
+	type RequestFunction = (url: string, callback: (err, res, body) => void) => void;
+	type ParseFunction = (body: string) => void;
+	
+	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => T, callback: ICallback<T>, url: string): void
+	{
+		let hadError = false;
+		request(url, (err, res, body) => {
+			if(!err && isSuccess(res))
+			{
+				if(hadError) // If request calls the callback although it already reported an error
+					return; // avoid calling the callback twice.
+				let parsedResponse = parser ? parser(body) : null;
+				callback(null, parsedResponse);
+			}
+			else if(!!err)
+			{
+				hadError = true;
+				callback(err, null);
+			}
+		});
+	}
+
 	/**
 	 * Switches the orange light on or off.
 	 */
@@ -90,6 +112,7 @@ module flipdot
 		let hadError = false;
 		let serviceUrl = getCANUrl(radiatorClientName, "getActTemp");
 
+		doAndParseRequest(request.get, statusUrl, )
 		request.get(serviceUrl, (err, res, body) => {
 			if(!err && isSuccess(res))
 			{
