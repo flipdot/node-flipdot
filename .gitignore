@@ -4,5 +4,6 @@ npm-debug.log
 
 # only index.ts
 # It gets compiled to js using "npm install"
-index.js
-test.js
+lib/flipdot.js
+lib/test.js
+build/*

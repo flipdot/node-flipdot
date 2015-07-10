@@ -6,6 +6,7 @@
     "door",
     "power"
   ],
+  "main": "build/flipdot.js",
   "version": "0.2.0",
   "author": {
     "name": "Niklas Mollenhauer",
@@ -27,13 +28,17 @@
     "request": "^2.55.0"
   },
   "devDependencies": {
+    "dts-bundle": "^0.2.0",
     "typescript": "^1.5.0-beta"
   },
   "private": true,
   "readmeFilename": "README.md",
   "scripts": {
-    "prepublish": "node_modules/.bin/tsc",
-    "test": "node_modules/.bin/tsc"
+    "prepublish": "node_modules/.bin/tsc & node bundle.js",
+    "test": "node_modules/.bin/tsc --outDir lib --target ES5 --module CommonJS lib/test.ts"
   },
-  "config": { }
+  "typescript": {
+    "definition": "build/flipdot.d.ts"
+  },
+  "config": {}
 }

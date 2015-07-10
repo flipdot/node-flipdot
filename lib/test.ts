@@ -1,4 +1,4 @@
-///<reference path="./index.ts" />
+///<reference path="./flipdot.ts" />
 
 /*
 	This file should compile.
@@ -12,7 +12,7 @@ import {
     getCurrentTemperature,
     getTargetTemperature,
     setTargetTemperature
-} from "./index";
+} from "./flipdot";
 
 getPowerConsumption((err, res) => {
     if(err) return console.error(err);
