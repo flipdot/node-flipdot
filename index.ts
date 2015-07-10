@@ -164,13 +164,6 @@ module flipdot
 	}
 
 	/**
-	 * @deprecated Use getSpaceStatus instead
-	 * Retrieves the current status of the hackerspace.
-	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
-	 */
-	export let requestSpaceStatus = getSpaceStatus;
-
-	/**
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
@@ -185,12 +178,6 @@ module flipdot
 			callback,
 			spaceStatusURL);
 	}
-
-	/**
-	 * @deprecated Use getPowerConsumption instead.
-	 * Get current power consumption in Watts.
-	 */
-	export let requestPowerConsumption = getPowerConsumption;
 
 	/**
 	 * Get current power consumption in Watts.
