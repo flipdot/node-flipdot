@@ -61,6 +61,9 @@ flipdot.setTargetTemperature(20, function(err) {
 });
 ```
 
+#### TODO
+- Open door using SSH private key
+
 ### Q Sample
 ```JavaScript
 var flipdot = require("flipdot");
