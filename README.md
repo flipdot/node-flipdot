@@ -2,6 +2,10 @@
 
 A web based client API for the flipdot hackerspace Kassel.
 
+```
+npm install flipdot
+```
+
 ## Features
 
 ### Current Hackers
