@@ -82,3 +82,14 @@ Q.all([
 	console.dir(results[1]);
 });
 ```
+
+### TypeScript usage
+
+`npm install flipdot`
+
+```TypeScript
+/// <reference path="./node_modules/flipdot/build/flipdot.d.ts" />
+import * as flipdot from "flipdot";
+// use flipdot here
+// tsc --module CommonJS --target ES5 file.ts
+```
