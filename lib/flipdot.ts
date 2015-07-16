@@ -143,13 +143,6 @@ module flipdot
 	 */
 	export function setTargetTemperature(temperature: number, callback: ICallback<void>): void
 	{
-		/*
-		 "Param xx: ((soll)*2) in hex. Alle Hexwerte in Kleinbuchstaben.
-		  z.B. Soll = 20C. 20*2 = 40; 40=28h" (wtf)
-		*/
-
-		// let targetTemp = (temperature * 2).toString(16);
-
 		// TODO: TEST THIS
 		let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
 		let serviceUrl = `${opUrl}?temp=${temperature}`;
@@ -244,8 +237,7 @@ module flipdot
 
 		let temp = responseBody.trim().toLowerCase();
 		return {
-			/* "Angabe in 1/100C" */
-			value: parseInt(temp) / 100,
+			value: parseInt(temp),
 			unit: "°C"
 		};
 	}
