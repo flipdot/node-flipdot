@@ -19,6 +19,10 @@ module flipdot
 		open: boolean;
 		known_users: IUser[];
 		unknown_users: number;
+
+		temperature_setpoint: number;
+		temperature_realvalue: number;
+		heater_valve: number;
 	}
 
 	export interface IPowerConsumption
