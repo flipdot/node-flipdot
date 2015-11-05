@@ -196,7 +196,10 @@ module flipdot
 		return {
 			open: status.open || false,
 			known_users: status.known_users || [],
-			unknown_users: status.unknown_users || 0
+			unknown_users: status.unknown_users || 0,
+			temperature_setpoint: status.temperature_setpoint || 0,
+			temperature_realvalue: status.temperature_realvalue || 0,
+			heater_valve: status.heater_valve || 0
 		};
 	}
 
