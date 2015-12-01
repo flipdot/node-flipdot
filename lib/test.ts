@@ -14,33 +14,22 @@ import {
     setTargetTemperature
 } from "./flipdot";
 
-getPowerConsumption((err, res) => {
-    if(err) return console.error(err);
+async function testAwait() {
+    var res = await getPowerConsumption();
     console.log(`Watts: ${res.consumption}`);
-});
 
-getSpaceStatus((err, res) => {
-    if(err) return console.error(err);
-    console.log(`Open?: ${res.open}`);
-    console.log(`Visitor count: ${res.unknown_users + res.known_users.length}`);
-});
+    var res2 = await getSpaceStatus();
+    console.log(`Open?: ${res2.open}`);
+    console.log(`Visitor count: ${res2.unknown_users + res2.known_users.length}`);
 
-setOrangeLightStatus(LightStatus.on, err => {
-    if(err) return console.error(err);
-    console.log("Done");
-});
+    await setOrangeLightStatus(LightStatus.on);
 
-getCurrentTemperature((err, temp) => {
-	if(err) return console.error(err);
+    var temp = await getCurrentTemperature();
     console.log("It is currently %d %s", temp.value, temp.unit);
-});
 
-getTargetTemperature((err, temp) => {
-	if(err) return console.error(err);
+    temp = await getTargetTemperature();
     console.log("The radiator is set to %d %s", temp.value, temp.unit);
-});
 
-setTargetTemperature(20, (err) => {
-	if(err) return console.error(err);
-    console.log("The radiator is now set to %d °C", 20);
-});
+    await setTargetTemperature(20);
+}
+testAwait();

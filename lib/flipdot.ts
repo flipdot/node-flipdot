@@ -46,11 +46,6 @@ module flipdot
 		unit: string;
 	}
 
-	export interface ICallback<T>
-	{
-		(err: any, status: T): void;
-	}
-
 	export enum LightStatus
 	{
 		off = 0,
@@ -69,75 +64,66 @@ module flipdot
 		}
 	}
 
-	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => [any, T], callback: ICallback<T>, url: string): void
+	function doAndParseRequest<T>(request: RequestFunction, parser: (body: string) => [any, T], url: string): Promise<T>
 	{
-		let hadError = false;
-		request(url, (err, res, body) => {
-			if(!err && isSuccess(res))
-			{
-				if(hadError) // If request calls the callback although it already reported an error
-					return; // avoid calling the callback twice.
-
-				let [err, res] = parser ? parser(body) : [null, null];
-
-				if(callback)
+		return new Promise((resolve, reject) => {
+			let hadError = false;
+			request(url, (err, res, body) => {
+				if(!err && isSuccess(res))
 				{
-					if(err)
-						callback(err, null);
-					else
-						callback(null, res);
+					if(hadError) // If request calls the callback although it already reported an error
+						return; // avoid calling the callback twice.
+
+					let [err, res] = parser ? parser(body) : [null, null];
+					return err ? reject(err) : resolve(res);
 				}
-			}
-			else if(!!err)
-			{
-				hadError = true;
-				if(callback)
-					callback(err, null);
-			}
+				if(!!err)
+				{
+					hadError = true;
+					reject(err);
+				}
+			});
 		});
 	}
 
 	/**
 	 * Switches the orange light on or off.
 	 */
-	export function setOrangeLightStatus(status: LightStatus, callback: ICallback<void>): void
+	export function setOrangeLightStatus(status: LightStatus): Promise<void>
 	{
 		let statusString = status == LightStatus.on ? "true" : "false";
 		let orangeLightUrl = getCANUrl(hutshieneClientName, "OrangeLight");
 		let statusUrl = `${orangeLightUrl}?state=${statusString}`;
 
-		return doAndParseRequest(
+		return doAndParseRequest<void>(
 			request.post,
 			null,
-			callback,
 			statusUrl);
 	}
 
 	/**
 	 * Gets the current temperature as measured by the sensor of the radiator control.
 	 */
-	export function getCurrentTemperature(callback: ICallback<ITemperature>): void
+	export function getCurrentTemperature(): Promise<ITemperature>
 	{
 		let serviceUrl = getCANUrl(radiatorClientName, "GetActTemp");
 
-		return doAndParseRequest(
+		return doAndParseRequest<ITemperature>(
 			request.get,
 			body => wrapWithTry(() => parseTemperature(body)),
-			callback,
 			serviceUrl);
 	}
 
 	/**
 	 * Gets the temperature that the radiator is set to.
 	 */
-	export function getTargetTemperature(callback: ICallback<ITemperature>): void
+	export function getTargetTemperature(): Promise<ITemperature>
 	{
 		let serviceUrl = getCANUrl(radiatorClientName, "GetTargetTemp");
 
-		return doAndParseRequest(
+		return doAndParseRequest<ITemperature>(
 			request.get,
 			body => wrapWithTry(() =>parseTemperature(body)),
-			callback,
 			serviceUrl);
 	}
 
@@ -145,16 +131,15 @@ module flipdot
 	 * Sets the target temperature of the radiator.
 	 * @param {number} temperature The target temperature in celsius.
 	 */
-	export function setTargetTemperature(temperature: number, callback: ICallback<void>): void
+	export function setTargetTemperature(temperature: number): Promise<void>
 	{
 		// TODO: TEST THIS
 		let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
 		let serviceUrl = `${opUrl}?temp=${temperature}`;
 
-		return doAndParseRequest(
+		return doAndParseRequest<void>(
 			request.post,
 			null,
-			callback,
 			serviceUrl);
 	}
 
@@ -162,27 +147,25 @@ module flipdot
 	 * Retrieves the current status of the hackerspace.
 	 * @param {ISpaceStatusCallback} callback The callback of the async operation.
 	 */
-	export function getSpaceStatus(callback: ICallback<ISpaceStatus>): void
+	export function getSpaceStatus(): Promise<ISpaceStatus>
 	{
-		return doAndParseRequest(
+		return doAndParseRequest<ISpaceStatus>(
 			request.get,
 			body => wrapWithTry(() => {
 				let status = JSON.parse(body);
 				return fixStatus(status);
 			}),
-			callback,
 			spaceStatusURL);
 	}
 
 	/**
 	 * Get current power consumption in Watts.
 	 */
-	export function getPowerConsumption(callback: ICallback<IPowerConsumption>): void
+	export function getPowerConsumption(): Promise<IPowerConsumption>
 	{
-		return doAndParseRequest(
+		return doAndParseRequest<IPowerConsumption>(
 			request.get,
 			body => wrapWithTry(() => parsePowerConsumption(body)),
-			callback,
 			powerConsumptionURL);
 	}
 
