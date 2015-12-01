@@ -19,7 +19,7 @@ let status = await getSpaceStatus();
 Get current power consumption in Watts:
 ```JavaScript
 var flipdot = require("flipdot");
-let data = flipdot.getPowerConsumption();
+let data = await flipdot.getPowerConsumption();
 console.dir(data);
 ```
 Outputs (for example):
