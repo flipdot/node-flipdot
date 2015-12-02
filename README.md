@@ -43,7 +43,7 @@ console.log("The orange light should now be on.");
 let temp = await flipdot.getCurrentTemperature();
 console.log("It is currently %d %s", temp.value, temp.unit);
 
-temp = await flipdot.getTargetTemperature(function(err, temp) {
+temp = await flipdot.getTargetTemperature();
 console.log("The radiator is set to %d %s", temp.value, temp.unit);
 
 await flipdot.setTargetTemperature(20);
