@@ -13,7 +13,7 @@
     "email": "nikeee@outlook.com",
     "url": "https://github.com/nikeee"
   },
-  "license": "Beerware/Pizzaware",
+  "license": "MIT",
   "engines": {
     "node": ">=4.0.0"
   },
