@@ -7,4 +7,5 @@ install:
   - "npm install -g tsd"
 script:
   - "npm install"
+  - "tsd install"
   - "npm test"

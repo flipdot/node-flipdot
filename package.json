@@ -29,11 +29,12 @@
   },
   "devDependencies": {
     "dts-bundle": "^0.2.0",
-    "typescript": "^1.7.0"
+    "typescript": "^1.7.0",
+    "tsd": "^0.6.5"
   },
   "readmeFilename": "README.md",
   "scripts": {
-    "prepublish": "npm test && node bundle.js",
+    "prepublish": "node_modules/.bin/tsd install && npm test && node bundle.js",
     "test": "node_modules/.bin/tsc"
   },
   "typescript": {
