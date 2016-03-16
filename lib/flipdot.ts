@@ -1,10 +1,11 @@
 /// <reference path="typings/tsd.d.ts" />
 
-import * as request from "request";
 "use strict";
 
 module flipdot
 {
+	import * as request from "request";
+
 	const spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
 	const powerConsumptionURL = "http://infragelb.de/flipdot-power/";
 
