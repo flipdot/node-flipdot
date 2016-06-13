@@ -23,13 +23,13 @@
     "issue_report_channels": [
         "issue_mail"
     ],
-    "open": true,
+    "open": null,
     "icon": {
         "open": "https://flipdot.org/wiki/door?action=AttachFile&do=get&target=fdopen.png",
         "closed": "https://flipdot.org/wiki/door?action=AttachFile&do=get&target=fdclosed.png"
     },
     "state": {
-        "open": true,
+        "open": null,
         "lastchange": 1465781037,
         "icon": {
             "open": "https://flipdot.org/wiki/door?action=AttachFile&do=get&target=fdopen.png",
@@ -44,7 +44,7 @@
         "sensors": {
             "temperature": [
                 {
-                    "value": 20,
+                    "value": null,
                     "unit": "°C",
                     "location": "mainroom"
                 }
@@ -55,7 +55,7 @@
                     "name": "mainspower",
                     "description": "overallpowerconsumptionfromourspace",
                     "location": "firstfloor",
-                    "value": 300
+                    "value": null
                 }
             ]
         }
