@@ -178,6 +178,6 @@ function getCANUrl(clientName: string, operation: string = ""): string {
 }
 
 function throwIfNotOkay(res: Response): never | void {
-	if (!res || !res.ok)
+	if (!res.ok)
 		throw new Error(`${res.status} ${res.statusText}`);
 }
