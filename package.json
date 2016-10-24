@@ -7,7 +7,7 @@
     "power"
   ],
   "main": "dist/flipdot.js",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "author": {
     "name": "Niklas Mollenhauer",
     "email": "nikeee@outlook.com",
