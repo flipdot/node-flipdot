@@ -38,6 +38,9 @@ export interface Temperature {
 	unit: string;
 }
 
+/**
+  * @deprecated The light does not exist any more.
+ */
 export const enum LightStatus {
 	Off = 0,
 	On = 1
@@ -76,9 +79,10 @@ function doAndParseRequest<T>(request: RequestFunction, parser: Parser<T> | null
 
 /**
  * Switches the orange light on or off.
+ * @deprecated The light does not exist any more.
  */
 export function setOrangeLightStatus(status: LightStatus): Promise<void> {
-	let statusString = status == LightStatus.on ? "true" : "false";
+	let statusString = status == LightStatus.On ? "true" : "false";
 	let orangeLightUrl = getCANUrl(hutshieneClientName, "OrangeLight");
 	let statusUrl = `${orangeLightUrl}?state=${statusString}`;
 
