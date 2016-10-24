@@ -1,9 +1,8 @@
+dist/
+build/
+*.js.map
 node_modules/
-
 npm-debug.log
-
-# only index.ts
-# It gets compiled to js using "npm install"
-lib/flipdot.js
-lib/test.js
-build/*
+.settings/
+typings/
+*.db*

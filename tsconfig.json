@@ -1,11 +1,16 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "ES6",
-		"outDir": "build",
-		"declaration": true
-	},
-	"files": [
-		"lib/flipdot.ts"
-	]
+		"target": "es6",
+		"outDir": "dist",
+		"declaration": true,
+		"sourceMap": false,
+		"newLine": "LF",
+		"removeComments": true,
+
+		"noImplicitAny": true,
+		"noImplicitThis": true,
+		"noImplicitReturns": true,
+		"strictNullChecks": true
+	}
 }
