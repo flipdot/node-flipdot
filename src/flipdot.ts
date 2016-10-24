@@ -10,9 +10,9 @@ const canBusBase = `http://${hutschienenHost}:${hutschienenPort}`;
 const hutshieneClientName = "Hutschiene";
 const radiatorClientName = "theemin";
 
-export interface ISpaceStatus {
+export interface SpaceStatus {
 	open: boolean;
-	known_users: IUser[];
+	known_users: User[];
 	unknown_users: number;
 
 	temperature_setpoint: number;
@@ -20,7 +20,7 @@ export interface ISpaceStatus {
 	heater_valve: number;
 }
 
-export interface IPowerConsumption {
+export interface PowerConsumption {
 	/**
 	 * Power consumption in Watts
 	 * @type {number}
@@ -29,18 +29,18 @@ export interface IPowerConsumption {
 	timestamp: Date;
 }
 
-export interface IUser {
+export interface User {
 	nick: string;
 }
 
-export interface ITemperature {
+export interface Temperature {
 	value: number;
 	unit: string;
 }
 
-export enum LightStatus {
-	off = 0,
-	on = 1
+export const enum LightStatus {
+	Off = 0,
+	On = 1
 }
 
 type RequestFunction = (url: string, callback: (err: any, res: any, body: any) => void) => void;
@@ -91,10 +91,10 @@ export function setOrangeLightStatus(status: LightStatus): Promise<void> {
 /**
  * Gets the current temperature as measured by the sensor of the radiator control.
  */
-export function getCurrentTemperature(): Promise<ITemperature> {
+export function getCurrentTemperature(): Promise<Temperature> {
 	let serviceUrl = getCANUrl(radiatorClientName, "GetActTemp");
 
-	return doAndParseRequest<ITemperature>(
+	return doAndParseRequest<Temperature>(
 		request.get,
 		body => wrapWithTry(() => parseTemperature(body)),
 		serviceUrl);
@@ -103,10 +103,10 @@ export function getCurrentTemperature(): Promise<ITemperature> {
 /**
  * Gets the temperature that the radiator is set to.
  */
-export function getTargetTemperature(): Promise<ITemperature> {
+export function getTargetTemperature(): Promise<Temperature> {
 	let serviceUrl = getCANUrl(radiatorClientName, "GetTargetTemp");
 
-	return doAndParseRequest<ITemperature>(
+	return doAndParseRequest<Temperature>(
 		request.get,
 		body => wrapWithTry(() => parseTemperature(body)),
 		serviceUrl);
@@ -131,8 +131,8 @@ export function setTargetTemperature(temperature: number): Promise<void> {
  * Retrieves the current status of the hackerspace.
  * @param {ISpaceStatusCallback} callback The callback of the async operation.
  */
-export function getSpaceStatus(): Promise<ISpaceStatus> {
-	return doAndParseRequest<ISpaceStatus>(
+export function getSpaceStatus(): Promise<SpaceStatus> {
+	return doAndParseRequest<SpaceStatus>(
 		request.get,
 		body => wrapWithTry(() => {
 			let status = JSON.parse(body);
@@ -144,8 +144,8 @@ export function getSpaceStatus(): Promise<ISpaceStatus> {
 /**
  * Get current power consumption in Watts.
  */
-export function getPowerConsumption(): Promise<IPowerConsumption> {
-	return doAndParseRequest<IPowerConsumption>(
+export function getPowerConsumption(): Promise<PowerConsumption> {
+	return doAndParseRequest<PowerConsumption>(
 		request.get,
 		body => wrapWithTry(() => parsePowerConsumption(body)),
 		powerConsumptionURL);
@@ -156,7 +156,7 @@ export function getPowerConsumption(): Promise<IPowerConsumption> {
  * @param  {ISpaceStatus} status The original return value.
  * @return {ISpaceStatus}        The normalized result.
  */
-function fixStatus(status: ISpaceStatus): ISpaceStatus {
+function fixStatus(status: SpaceStatus): SpaceStatus {
 	return {
 		open: status.open || false,
 		known_users: status.known_users || [],
@@ -167,7 +167,7 @@ function fixStatus(status: ISpaceStatus): ISpaceStatus {
 	};
 }
 
-function parsePowerConsumption(apiResponse: string): IPowerConsumption {
+function parsePowerConsumption(apiResponse: string): PowerConsumption {
 	if (!apiResponse || apiResponse.trim() == "")
 		throw new Error("Empty API response.");
 
@@ -200,7 +200,7 @@ function parsePowerConsumption(apiResponse: string): IPowerConsumption {
 /**
  * Parses a temperature response of the radiator client.
  */
-function parseTemperature(responseBody: string): ITemperature {
+function parseTemperature(responseBody: string): Temperature {
 	if (!responseBody || responseBody.trim() === "")
 		throw new Error("Got empty response from CAN client");
 
