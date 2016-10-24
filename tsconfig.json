@@ -1,13 +1,12 @@
 {
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es6",
+		"target": "es2015",
 		"outDir": "dist",
 		"declaration": true,
 		"sourceMap": false,
 		"newLine": "LF",
 		"removeComments": true,
-
 		"noImplicitAny": true,
 		"noImplicitThis": true,
 		"noImplicitReturns": true,
