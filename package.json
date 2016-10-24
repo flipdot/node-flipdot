@@ -25,12 +25,12 @@
     "url": "http://github.com/flipdot/node-flipdot/issues"
   },
   "dependencies": {
+    "@types/request": "0.0.32",
     "request": "^2.55.0"
   },
   "devDependencies": {
     "dts-bundle": "^0.2.0",
-    "typescript": "^1.7.0",
-    "tsd": "^0.6.5"
+    "typescript": "^1.7.0"
   },
   "readmeFilename": "README.md",
   "scripts": {
