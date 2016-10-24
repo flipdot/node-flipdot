@@ -11,15 +11,15 @@ npm install flipdot
 ### Current Hackers
 Get current visitors:
 ```JavaScript
-var flipdot = require("flipdot");
-let status = await getSpaceStatus();
+import * as fd from "flipdot";
+let status = await fd.getSpaceStatus();
 ```
 
 ### Power Consumption
 Get current power consumption in Watts:
 ```JavaScript
-var flipdot = require("flipdot");
-let data = await flipdot.getPowerConsumption();
+import * as fd from "flipdot";
+let data = await fd.getPowerConsumption();
 console.dir(data);
 ```
 Outputs (for example):
@@ -33,34 +33,28 @@ Outputs (for example):
 ### Orange Light
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-await flipdot.setOrangeLightStatus(flipdot.LightStatus.on);
+await fd.setOrangeLightStatus(fd.LightStatus.on);
 console.log("The orange light should now be on.");
 ```
 
 ### Radiator Control
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-let temp = await flipdot.getCurrentTemperature();
+let temp = await fd.getCurrentTemperature();
 console.log("It is currently %d %s", temp.value, temp.unit);
 
-temp = await flipdot.getTargetTemperature();
+temp = await fd.getTargetTemperature();
 console.log("The radiator is set to %d %s", temp.value, temp.unit);
 
-await flipdot.setTargetTemperature(20);
+await fd.setTargetTemperature(20);
 console.log("The radiator is now set to %d °C", 20);
 ```
 
-#### TODO
-- Open door using SSH private key
-
-
 ### TypeScript usage
-
-`npm install flipdot`
-
+Just do this:
 ```TypeScript
-/// <reference path="./node_modules/flipdot/build/flipdot.d.ts" />
 import * as flipdot from "flipdot";
-// use flipdot here
-// tsc --module CommonJS --target ES6 file.ts
+// compile using:
+// tsc --module CommonJS --target ES2015
 ```
+TypeScript 2 required. The type definitions will be fetched from the npm package. It just works.
