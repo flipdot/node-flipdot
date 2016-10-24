@@ -7,6 +7,7 @@
     "power"
   ],
   "main": "dist/lib.js",
+  "typings": "dist/lib.d.ts",
   "version": "3.0.1",
   "author": {
     "name": "Niklas Mollenhauer",
@@ -35,8 +36,5 @@
   "scripts": {
     "prepublish": "node_modules/.bin/tsc",
     "test": "node_modules/.bin/tsc"
-  },
-  "typescript": {
-    "definition": "dist/lib.d.ts"
   }
 }
