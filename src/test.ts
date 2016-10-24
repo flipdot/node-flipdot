@@ -18,7 +18,7 @@ async function testAwait() {
 	console.log(`Open?: ${res2.open}`);
 	console.log(`Visitor count: ${res2.unknown_users + res2.known_users.length}`);
 
-	await setOrangeLightStatus(LightStatus.on);
+	await setOrangeLightStatus(LightStatus.On);
 
 	var temp = await getCurrentTemperature();
 	console.log("It is currently %d %s", temp.value, temp.unit);
