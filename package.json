@@ -26,6 +26,7 @@
     "url": "http://github.com/flipdot/node-flipdot/issues"
   },
   "dependencies": {
+    "@types/node": "^6.0.51",
     "@types/node-fetch": "^1.6.5",
     "node-fetch": "^1.6.3"
   },

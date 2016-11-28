@@ -30,11 +30,10 @@ Outputs (for example):
 }
 ```
 
-### Orange Light
+### Zahnarztlampe
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-await fd.setOrangeLightStatus(fd.LightStatus.on);
-console.log("The orange light should now be on.");
+fd.setZahnarztlampeColor({r: 128, g: 0, b: 255});
 ```
 
 ### Radiator Control
