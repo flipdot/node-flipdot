@@ -3,8 +3,7 @@
 import {
 	getPowerConsumption,
 	getSpaceStatus,
-	setOrangeLightStatus,
-	LightStatus,
+	setZahnarztlampeColor,
 	getCurrentTemperature,
 	getTargetTemperature,
 	setTargetTemperature
@@ -18,7 +17,7 @@ async function testAwait() {
 	console.log(`Open?: ${res2.open}`);
 	console.log(`Visitor count: ${res2.unknown_users + res2.known_users.length}`);
 
-	await setOrangeLightStatus(LightStatus.On);
+	setZahnarztlampeColor({ r: 128, g: 0, b: 255 });
 
 	var temp = await getCurrentTemperature();
 	console.log("It is currently %d %s", temp.value, temp.unit);

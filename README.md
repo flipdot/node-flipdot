@@ -33,7 +33,7 @@ Outputs (for example):
 ### Zahnarztlampe
 **Note:** This functionality is only available when the client is in the network of flipdot Kassel.
 ```JavaScript
-fd.setZahnarztlampeColor({r: 128, g: 0, b: 255});
+fd.setZahnarztlampeColor({ r: 128, g: 0, b: 255 });
 ```
 
 ### Radiator Control
