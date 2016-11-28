@@ -8,7 +8,7 @@
   ],
   "main": "dist/lib.js",
   "typings": "dist/lib.d.ts",
-  "version": "3.0.2",
+  "version": "4.0.0",
   "author": {
     "name": "Niklas Mollenhauer",
     "email": "nikeee@outlook.com",
