@@ -1,4 +1,4 @@
-import fetch, { Headers, Request, RequestInit, Response } from "node-fetch";
+import fetch, { Response } from "node-fetch";
 import { createSocket } from "dgram";
 
 const spaceStatusURL = "http://flipdot.org/spacestatus/status.json";
@@ -67,7 +67,7 @@ function fixColor(color: Color): Color {
  * Gets the current temperature as measured by the sensor of the radiator control.
  */
 export async function getCurrentTemperature(): Promise<Temperature> {
-	let serviceUrl = getCANUrl(radiatorClientName, "GetActTemp");
+	const serviceUrl = getCANUrl(radiatorClientName, "GetActTemp");
 	const res = await fetch(serviceUrl);
 	throwIfNotOkay(res);
 	const currentTemp = await res.text();
@@ -91,7 +91,7 @@ export async function getTargetTemperature(): Promise<Temperature> {
  */
 export function setTargetTemperature(temperature: number): Promise<Response> {
 	// TODO: TEST THIS
-	let opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
+	const opUrl = getCANUrl(radiatorClientName, "SetTargetTemp");
 	const serviceUrl = `${opUrl}?temp=${temperature}`;
 
 	return fetch(serviceUrl, { method: "POST" });
@@ -143,22 +143,22 @@ function parsePowerConsumption(apiResponse: string): PowerConsumption {
 
 	// 27.01.2015,21:47:48,00438
 
-	let dateStr = splitted[0].trim();
-	let timeStr = splitted[1].trim();
-	let consumptionStr = splitted[2].trim();
+	const dateStr = splitted[0].trim();
+	const timeStr = splitted[1].trim();
+	const consumptionStr = splitted[2].trim();
 
-	let dateSplit = dateStr.split(".");
-	let timeSplit = timeStr.split(":");
+	const dateSplit = dateStr.split(".");
+	const timeSplit = timeStr.split(":");
 
 	if (dateSplit.length !== 3 || timeSplit.length !== 3)
 		throw new Error("Invalid API response (malformed date/time).");
 
 	// constructor for months takes 0-based months
-	let timestamp = new Date(parseInt(dateSplit[2]), parseInt(dateSplit[1]) - 1, parseInt(dateSplit[0]),
+	const timestamp = new Date(parseInt(dateSplit[2]), parseInt(dateSplit[1]) - 1, parseInt(dateSplit[0]),
 		parseInt(timeSplit[0]), parseInt(timeSplit[1]), parseInt(timeSplit[2]), 0);
 
 	return {
-		timestamp: timestamp,
+		timestamp,
 		consumption: parseInt(consumptionStr) /* may catch parse error here to throw specific exception */
 	};
 }
@@ -170,7 +170,7 @@ function parseTemperature(responseBody: string): Temperature {
 	if (!responseBody || responseBody.trim() === "")
 		throw new Error("Got empty response from CAN client");
 
-	let temp = responseBody.trim().toLowerCase();
+	const temp = responseBody.trim().toLowerCase();
 	return {
 		value: parseInt(temp),
 		unit: "°C"
