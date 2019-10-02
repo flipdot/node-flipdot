@@ -1,30 +1,20 @@
 {
   "name": "flipdot",
+  "version": "4.0.0",
   "description": "A web based client API for the flipdot hackerspace Kassel.",
   "tags": [
     "hackerspace",
     "door",
     "power"
   ],
-  "main": "dist/lib.js",
-  "typings": "dist/lib.d.ts",
-  "version": "4.0.0",
-  "author": {
-    "name": "Niklas Mollenhauer",
-    "email": "nikeee@outlook.com",
-    "url": "https://github.com/nikeee"
-  },
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "author": "Niklas Mollenhauer <nikeee@outlook.com>",
   "license": "MIT",
   "engines": {
     "node": ">=6.0.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/flipdot/node-flipdot.git"
-  },
-  "bugs": {
-    "url": "http://github.com/flipdot/node-flipdot/issues"
-  },
+  "repository": "https://github.com/flipdot/node-flipdot.git",
   "dependencies": {
     "@types/node": "^6.0.78",
     "@types/node-fetch": "^1.6.7",
@@ -33,9 +23,8 @@
   "devDependencies": {
     "typescript": "^2.4.0"
   },
-  "readmeFilename": "README.md",
   "scripts": {
-    "prepublish": "node_modules/.bin/tsc",
-    "test": "node_modules/.bin/tsc"
+    "prepublish": "tsc",
+    "test": "tsc --noEmit"
   }
 }
