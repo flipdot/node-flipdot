@@ -1,8 +1,7 @@
-dist/
-build/
+dist
+build
 *.js.map
-node_modules/
-npm-debug.log
-.settings/
-typings/
+node_modules
+*.log
+.settings
 *.db*
