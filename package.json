@@ -10,7 +10,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "author": "Niklas Mollenhauer <nikeee@outlook.com>",
-  "license": "AGPL-3.0-or-later",
+  "license": "AGPL-3.0",
   "engines": {
     "node": ">=6.0.0"
   },
