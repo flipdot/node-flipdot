@@ -60,7 +60,7 @@ function fixColor(color: Color): Color {
 		r: Math.min(255, Math.max(0, color.r)),
 		g: Math.min(255, Math.max(0, color.g)),
 		b: Math.min(255, Math.max(0, color.b)),
-	}
+	};
 }
 
 /**
@@ -104,7 +104,7 @@ export async function getSpaceStatus(): Promise<SpaceStatus> {
 	const res = await fetch(spaceStatusURL);
 	throwIfNotOkay(res);
 	const status = await res.json();
-	return fixStatus(status);
+	return fixStatus(status as SpaceStatus);
 }
 
 /**
@@ -129,7 +129,7 @@ function fixStatus(status: SpaceStatus): SpaceStatus {
 		unknown_users: status.unknown_users || 0,
 		temperature_setpoint: status.temperature_setpoint || 0,
 		temperature_realvalue: status.temperature_realvalue || 0,
-		heater_valve: status.heater_valve || 0
+		heater_valve: status.heater_valve || 0,
 	};
 }
 
@@ -154,12 +154,22 @@ function parsePowerConsumption(apiResponse: string): PowerConsumption {
 		throw new Error("Invalid API response (malformed date/time).");
 
 	// constructor for months takes 0-based months
-	const timestamp = new Date(parseInt(dateSplit[2]), parseInt(dateSplit[1]) - 1, parseInt(dateSplit[0]),
-		parseInt(timeSplit[0]), parseInt(timeSplit[1]), parseInt(timeSplit[2]), 0);
+	const timestamp = new Date(
+		parseInt(dateSplit[2]),
+		parseInt(dateSplit[1]) - 1,
+		parseInt(dateSplit[0]),
+		parseInt(timeSplit[0]),
+		parseInt(timeSplit[1]),
+		parseInt(timeSplit[2]),
+		0
+	);
 
 	return {
 		timestamp,
-		consumption: parseInt(consumptionStr) /* may catch parse error here to throw specific exception */
+		consumption:
+			parseInt(
+				consumptionStr
+			) /* may catch parse error here to throw specific exception */,
 	};
 }
 
@@ -173,17 +183,15 @@ function parseTemperature(responseBody: string): Temperature {
 	const temp = responseBody.trim().toLowerCase();
 	return {
 		value: parseInt(temp),
-		unit: "°C"
+		unit: "°C",
 	};
 }
 
 function getCANUrl(clientName: string, operation: string = ""): string {
-	if (operation !== "")
-		operation = "/" + operation;
+	if (operation !== "") operation = "/" + operation;
 	return `${canBusBase}/${clientName}${operation}`;
 }
 
 function throwIfNotOkay(res: Response): never | void {
-	if (!res.ok)
-		throw new Error(`${res.status} ${res.statusText}`);
+	if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
 }
